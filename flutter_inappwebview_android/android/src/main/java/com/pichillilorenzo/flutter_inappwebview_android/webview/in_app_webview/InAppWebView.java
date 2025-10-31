@@ -767,7 +767,8 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
           int quality = 100;
 
           if (screenshotConfiguration != null) {
-            Map<String, Double> rect = (Map<String, Double>) screenshotConfiguration.get("rect");
+            Object rectObj = screenshotConfiguration.get("rect");
+            Map<String, Double> rect = rectObj instanceof Map ? (Map<String, Double>) rectObj : null;
             if (rect != null) {
               bitmapScrollX = (int) Math.floor(rect.get("x") * pixelDensity + 0.5);
               bitmapScrollY = (int) Math.floor(rect.get("y") * pixelDensity + 0.5);
