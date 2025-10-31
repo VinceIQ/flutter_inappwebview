@@ -1709,10 +1709,14 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
     List<Map<String, Object>> customMenuItems = new ArrayList<>();
     ContextMenuSettings contextMenuSettings = new ContextMenuSettings();
     if (contextMenu != null) {
-      customMenuItems = (List<Map<String, Object>>) contextMenu.get("menuItems");
+      @SuppressWarnings("unchecked")
+      List<Map<String, Object>> customMenuItemsTemp = (List<Map<String, Object>>) contextMenu.get("menuItems");
+      customMenuItems = customMenuItemsTemp;
+  
+      @SuppressWarnings("unchecked")
       Map<String, Object> contextMenuSettingsMap = (Map<String, Object>) contextMenu.get("settings");
       if (contextMenuSettingsMap != null) {
-        contextMenuSettings.parse(contextMenuSettingsMap);
+          contextMenuSettings.parse(contextMenuSettingsMap);
       }
     }
     customMenuItems = customMenuItems == null ? new ArrayList<Map<String, Object>>() : customMenuItems;
