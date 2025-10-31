@@ -824,6 +824,12 @@ public class InAppWebViewChromeClient extends WebChromeClient implements PluginR
     }
 
     private boolean onShowFileChooser(@NonNull ShowFileChooserRequest request, @NonNull ValueCallback<?> filePathsCallback) {
+        Log.d(LOG_TAG, "needsCameraPermission():" + needsCameraPermission());
+        Activity activity = inAppBrowserDelegate != null ? inAppBrowserDelegate.getActivity() : plugin.activity;
+        if (ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            //TODO: onRequestPermissionsResult to add photo intent
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
+        }
         WebViewChannelDelegate.ShowFileChooserCallback callback = new WebViewChannelDelegate.ShowFileChooserCallback() {
             @Override
             public boolean nonNullSuccess(@NonNull ShowFileChooserResponse response) {
@@ -894,13 +900,6 @@ public class InAppWebViewChromeClient extends WebChromeClient implements PluginR
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-        Log.d(LOG_TAG, "needsCameraPermission():" + needsCameraPermission());
-        Activity activity = inAppBrowserDelegate != null ? inAppBrowserDelegate.getActivity() : plugin.activity;
-        if (ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            //TODO: onRequestPermissionsResult to add photo intent
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
-            return true;
-        }
         return onShowFileChooser(ShowFileChooserRequest.fromFileChooserParams(fileChooserParams), filePathCallback);
     }
 
