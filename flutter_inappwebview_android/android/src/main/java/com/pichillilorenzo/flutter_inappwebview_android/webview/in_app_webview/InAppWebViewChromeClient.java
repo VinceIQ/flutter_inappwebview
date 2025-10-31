@@ -69,13 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.flutter.plugin.common.PluginRegistry;
-import android.app.Activity;
-import android.Manifest;
 import androidx.core.app.ActivityCompat;
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.MediaStore;
 
 
 public class InAppWebViewChromeClient extends WebChromeClient implements PluginRegistry.ActivityResultListener, ActivityResultListener {
