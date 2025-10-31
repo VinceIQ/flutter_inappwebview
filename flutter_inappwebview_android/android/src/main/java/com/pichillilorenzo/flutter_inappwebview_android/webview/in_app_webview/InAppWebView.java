@@ -768,12 +768,23 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
 
           if (screenshotConfiguration != null) {
             Object rectObj = screenshotConfiguration.get("rect");
-            Map<String, Double> rect = rectObj instanceof Map ? (Map<String, Double>) rectObj : null;
+            Map<String, Double> rect = null;
+            
+            if (rectObj instanceof Map) {
+                rect = new HashMap<>();
+                Map<?, ?> tempMap = (Map<?, ?>) rectObj;
+                for (Map.Entry<?, ?> entry : tempMap.entrySet()) {
+                    if (entry.getKey() instanceof String && entry.getValue() instanceof Number) {
+                        rect.put((String) entry.getKey(), ((Number) entry.getValue()).doubleValue());
+                    }
+                }
+            }
+            
             if (rect != null) {
-              bitmapScrollX = (int) Math.floor(rect.get("x") * pixelDensity + 0.5);
-              bitmapScrollY = (int) Math.floor(rect.get("y") * pixelDensity + 0.5);
-              bitmapWidth = (int) Math.floor(rect.get("width") * pixelDensity + 0.5);
-              bitmapHeight = (int) Math.floor(rect.get("height") * pixelDensity + 0.5);
+                bitmapScrollX = (int) Math.floor(rect.get("x") * pixelDensity + 0.5);
+                bitmapScrollY = (int) Math.floor(rect.get("y") * pixelDensity + 0.5);
+                bitmapWidth = (int) Math.floor(rect.get("width") * pixelDensity + 0.5);
+                bitmapHeight = (int) Math.floor(rect.get("height") * pixelDensity + 0.5);
             }
 
             try {
