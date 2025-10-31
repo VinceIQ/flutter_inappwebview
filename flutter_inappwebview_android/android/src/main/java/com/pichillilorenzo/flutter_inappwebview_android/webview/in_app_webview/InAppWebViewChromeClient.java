@@ -1003,6 +1003,13 @@ public class InAppWebViewChromeClient extends WebChromeClient implements PluginR
 
     Intent pickerIntent = null;
 
+    if (needsCameraPermission()) {
+      Activity activity = inAppBrowserDelegate != null ? inAppBrowserDelegate.getActivity() : plugin.activity;
+      //TODO: onRequestPermissionsResult to add photo intent
+      ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
+      return;
+    }
+
     if (captureEnabled) {
       if (!needsCameraPermission()) {
         if (images) {
